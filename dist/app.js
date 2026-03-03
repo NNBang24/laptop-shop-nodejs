@@ -19,6 +19,7 @@ app.use(express_1.default.static('public'));
 // config routers
 (0, web_1.default)(app);
 // getConnection() ;
+//
 app.listen(PORT, () => {
     console.log(`lang nghe tai http://localhost:${PORT}`);
 });

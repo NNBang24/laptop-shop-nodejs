@@ -23,6 +23,8 @@ model User {
   accountType String  @db.VarChar(50)
   avatar      String? @db.VarChar(255)
 
+  roleId  Int  
+  role Role @relation(fields: [roleId] , references: [id])
   @@map("users")
 }
 
@@ -31,6 +33,7 @@ model Role {
   name        String @db.VarChar(255) @unique
   description String @db.VarChar(255)
 
+  users  User[]   
   @@map("roles")
 }
 

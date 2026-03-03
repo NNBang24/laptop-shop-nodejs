@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { getALlUsers, handleCreateUser, handleDeleteUser, getUserById, handleUpdateUserById, getALlRoles } from "../services/userServices";
+import { access } from "fs";
 
 const getHomePage = async (req: Request, res: Response) => {
     try {
@@ -24,30 +25,34 @@ const postCreateUserPage = async (req: Request, res: Response) => {
     const file = req.file;
     const avatar = file?.filename ?? "" ;
     //handle create user
-    await handleCreateUser(fullName, username, address, phone, avatar);
+    await handleCreateUser(fullName, username, address, phone, avatar , role);
     return res.redirect('/admin/user')
 }
 const postDeleteUser = async (req: Request, res: Response) => {
     // console.log(req.params.id);
     const { id } = req.params;
     await handleDeleteUser(id)
-    return res.redirect('/')
+    return res.redirect('/admin/user')
 }
 const getViewUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     const user = await getUserById(id);
-
-    return res.render("viewUser.ejs", {
+    const roles = await getALlRoles() ;
+    return res.render("admin/user/detail", {
         id: id,
-        user: user
+        user: user ,
+        roles , 
+        
     })
 }
 const postUpdateUser = async (req: Request, res: Response) => {
-    const { fullName, email, address, id } = req.body;
+    const { id ,fullName, phone, role, address } = req.body;
+    const file = req.file;
+    const avatar = file?.filename ?? undefined;
 
     // update user 
-    await handleUpdateUserById(id, fullName, email, address);
-    return res.redirect('/')
+    await handleUpdateUserById(id, fullName, phone, role, address , avatar);
+    return res.redirect('/admin/user')
 }
 export {
     getHomePage,
