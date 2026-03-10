@@ -10,11 +10,11 @@ const webRouters = (app: Express) => {
     router.get('/',
         getHomePage
     )
-    router.get('/product' ,
+    router.get('/product/:id' ,
         getProductPage
     )
     // admin router 
-    router.get('/', getDashboardPage)
+    router.get('/admin', getDashboardPage)
     router.get('/admin/user', getAdminUserPage)
     router.get('/admin/create-user',
         getCreateUserPage
