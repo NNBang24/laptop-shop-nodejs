@@ -5,6 +5,7 @@ import webRouters from "./routers/web";
 import initDatabase from "./config/seed";
 import passport from "passport";
 import configPassportLocal from "./middleware/passportLocal";
+import session from "express-session";
 
 const app = express();
 const PORT = process.env.PORT || 1080;
@@ -18,8 +19,16 @@ app.use(express.urlencoded({ extended: true }));
 // config static files ( image , css ,js )
 app.use(express.static('public')) ;
 
+// config session 
+app.use(session({
+  secret : "aaaaaa" ,
+  resave : false ,
+  saveUninitialized : true
+}))
+
 // config passport
 app.use(passport.initialize()) ;
+app.use(passport.authenticate('session'))
 configPassportLocal(  )
 
 // config routers

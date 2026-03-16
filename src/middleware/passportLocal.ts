@@ -3,7 +3,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { prisma } from "src/config/client";
 import { comparePassword } from "src/services/userServices";
 
-const   configPassportLocal = () => {
+const configPassportLocal = () => {
     passport.use(new LocalStrategy(async function verify(username, password, callBack) {
         console.log(">> check username and password ", username, password);
 
@@ -26,6 +26,17 @@ const   configPassportLocal = () => {
         }
         return callBack(null, user);
     }))
+    passport.serializeUser(function (user: any, cb) { //Sau khi login thành công -> Passport sẽ lưu user vào session -> Nhưng không lưu toàn bộ user.
+        process.nextTick(function () {
+            cb(null, { id: user.id, username: user.username });
+        });
+    });
+
+    passport.deserializeUser(function (user, cb) { //Mỗi request tiếp theo -> Passport sẽ lấy user từ session và gắn vào:
+        process.nextTick(function () {
+            return cb(null, user);
+        });
+    });
 }
 
 export default configPassportLocal
