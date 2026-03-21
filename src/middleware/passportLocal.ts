@@ -1,10 +1,14 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { prisma } from "src/config/client";
-import { comparePassword } from "src/services/userServices";
+import { comparePassword, getUserById } from "src/services/userServices";
 
 const configPassportLocal = () => {
-    passport.use(new LocalStrategy(async function verify(username, password, callBack) {
+    passport.use(new LocalStrategy({ passReqToCallback: true }, async function verify(req, username, password, callBack) {
+        const { session } = req as any;
+        if (session?.messages?.length) {
+            session.messages = []
+        }
         console.log(">> check username and password ", username, password);
 
         // check user exist in database 
@@ -15,27 +19,29 @@ const configPassportLocal = () => {
         })
         if (!user) {
             // throw new Error(`Username : ${username} not found` ) ;
-            return callBack(null, false, { message: 'Incorrect username or password .' })
+            return callBack(null, false, { message: `Username/Password invalid` })
         }
         //compare password
         const isMatch = await comparePassword(password, user.password);
         if (!isMatch) {
 
             // throw new Error(`Invalid password not found`) ;
-            return callBack(null, false, { message: 'Invalid password not found .' })
+            return callBack(null, false, { message: 'Invalid password ' })
         }
         return callBack(null, user);
     }))
-    passport.serializeUser(function (user: any, cb) { //Sau khi login thành công -> Passport sẽ lưu user vào session -> Nhưng không lưu toàn bộ user.
-        process.nextTick(function () {
-            cb(null, { id: user.id, username: user.username });
-        });
+    passport.serializeUser(function (user: any, callBack) { //Sau khi login thành công -> Passport sẽ lưu user vào session -> Nhưng không lưu toàn bộ user.
+
+        callBack(null, { id: user.id});
+
     });
 
-    passport.deserializeUser(function (user, cb) { //Mỗi request tiếp theo -> Passport sẽ lấy user từ session và gắn vào:
-        process.nextTick(function () {
-            return cb(null, user);
-        });
+    passport.deserializeUser(async function (user :any, callBack) { //Mỗi request tiếp theo -> Passport sẽ lấy user từ session và gắn vào:
+        const {id } = user
+        // query to database
+        const userInDB = await getUserById(id)
+        return callBack(null, {...userInDB});
+
     });
 }
 

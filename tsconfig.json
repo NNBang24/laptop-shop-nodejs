@@ -9,5 +9,8 @@
     "rootDir": "src",
     "outDir": "dist",
     "baseUrl": "."
-  }
+  },
+  "include": [
+    "src"
+  ]
 }

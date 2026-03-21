@@ -1,5 +1,5 @@
 import {Request , Response} from "express" ;
-import { register } from "module";
+
 import { registerNewUser } from "src/services/client/authServices";
 import { RegisterSchema, TRegisterSchema } from "src/validation/registerSchema";
 
@@ -16,7 +16,10 @@ const getRegisterPage = async(req:Request , res :Response) => {
     return res.render('client/auth/register',{errors , oldData})
 }
 const getLoginPage = async (req: Request, res: Response) => {
-    return res.render('client/auth/login')
+ 
+    const {session} =req as any  ;
+    const messages = session?.messages ?? []
+    return res.render('client/auth/login' ,{messages})
 }
 const postRegister = async(req : Request , res : Response) => {
     const {fullName , email ,password , confirmPassword} = req.body as TRegisterSchema ;
