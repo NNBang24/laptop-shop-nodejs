@@ -6,7 +6,8 @@ import { getProducts } from "src/services/client/itemServices";
 const getHomePage = async (req: Request, res: Response) => {
         const products = await getProducts();
         const user = req.user ; 
-        console.log(">>> current user" , user)
+        const a = req.user
+        // console.log(">>> current user" , user)
         return res.render("client/home/show.ejs" , {products});
     
 };

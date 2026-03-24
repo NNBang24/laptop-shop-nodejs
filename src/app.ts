@@ -32,7 +32,7 @@ app.use(session({
   store: new PrismaSessionStore(
     new PrismaClient(),
     {
-      checkPeriod: 2 * 60 * 1000,  //ms
+      checkPeriod: 1 * 24 * 60 * 60 * 1000,  //ms
       dbRecordIdIsSessionId: true,
       dbRecordIdFunction: undefined,
     }
@@ -42,7 +42,12 @@ app.use(session({
 // config passport
 app.use(passport.initialize());
 app.use(passport.authenticate('session'))
-configPassportLocal()
+configPassportLocal() // middleware
+// config global //middleware
+app.use((req, res, next) => {
+  res.locals.user = req.user || null 
+  next()
+})
 
 // config routers
 webRouters(app);
