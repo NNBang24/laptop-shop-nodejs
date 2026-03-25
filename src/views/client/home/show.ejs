@@ -105,7 +105,7 @@
                                                                     <%= product.shortDesc %>
                                                                 </p>
                                                 
-                                                                <div class="d-flex flex-lg-wrap">
+                                                                <div class="d-flex flex-lg-wrap justify-content-center">
                                                                     <p style="font-size: 15px; text-align: center; width: 100%;" class="text-dark fs-5 fw-bold mb-3">
                                                 
                                                                         <%= new Intl.NumberFormat('vi-VN', { style: 'currency' , currency: 'VND'
@@ -113,10 +113,13 @@
                                                 
                                                                     </p>
                                                 
-                                                                    <a href="#" class="mx-auto btn border border-secondary rounded-pill px-3 text-primary">
+                                                                <form method="post" action="/add-product-to-cart/<%= product.id %>">
+                                                                    <button class="mx-auto btn border border-secondary rounded-pill px-3 text-primary">
                                                                         <i class="fa fa-shopping-bag me-2 text-primary"></i>
                                                                         Add to cart
-                                                                    </a>
+                                                                    </button>
+                                                                </form>
+
                                                                 </div>
                                                 
                                                             </div>
