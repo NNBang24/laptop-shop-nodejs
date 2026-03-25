@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { prisma } from "src/config/client";
+import { getUserWithRoleById } from "src/services/client/authServices";
 import { comparePassword, getUserById } from "src/services/userServices";
 
 const configPassportLocal = () => {
@@ -28,7 +29,7 @@ const configPassportLocal = () => {
             // throw new Error(`Invalid password not found`) ;
             return callBack(null, false, { message: 'Invalid password ' })
         }
-        return callBack(null, user);
+        return callBack(null, user as any);
     }))
     passport.serializeUser(function (user: any, callBack) { //Sau khi login thành công -> Passport sẽ lưu user vào session -> Nhưng không lưu toàn bộ user.
 
@@ -39,7 +40,7 @@ const configPassportLocal = () => {
     passport.deserializeUser(async function (user :any, callBack) { //Mỗi request tiếp theo -> Passport sẽ lấy user từ session và gắn vào:
         const {id } = user
         // query to database
-        const userInDB = await getUserById(id)
+        const userInDB = await getUserWithRoleById(id)
         return callBack(null, {...userInDB});
 
     });

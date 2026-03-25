@@ -4,32 +4,35 @@ import { getDashboardPage, getAdminUserPage, getAdminProductPage, getAdminOrderP
 import fileUpLoadMiddleware from 'src/middleware/multer';
 import { getProductPage } from 'src/controllers/client/productController';
 import { getAminCreateProductPage, getViewProduct, postAminCreateProduct, postDeleteProduct, postUpdateProduct } from 'src/controllers/admin/productController';
-import { getLoginPage, getRegisterPage, postRegister } from 'src/controllers/client/authController';
+import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogout, postRegister } from 'src/controllers/client/authController';
 import { hashPassword } from 'src/services/userServices';
 import passport from 'passport';
+import { isAdmin, isLogin } from 'src/middleware/auth';
 
 const router = express.Router();
 const webRouters = (app: Express) => {
     router.get('/',
         getHomePage
     )
+    router.get('/success-redirect', getSuccessRedirectPage)
     router.get('/product/:id',
         getProductPage
     )
-    router.get('/login', getLoginPage);
-    router.post('/login' ,passport.authenticate('local' ,{
-        successRedirect :'/' ,
-        failureRedirect : '/login' ,
-        failureMessage : true 
+    router.get('/login', isLogin, getLoginPage);
+    router.post('/login', passport.authenticate('local', {
+        successRedirect: '/success-redirect',
+        failureRedirect: '/login',
+        failureMessage: true
     }))
 
 
-    router.get('/register', getRegisterPage);
-    router.post('/register', postRegister)
+    router.get('/register', isLogin, getRegisterPage);
+    router.post('/register', postRegister) ;
+    router.post('/logout', postLogout);
     // admin router 
-    router.get('/admin', getDashboardPage)
+    router.get('/admin',getDashboardPage)
     router.get('/admin/user', getAdminUserPage)
-    router.get('/admin/create-user',
+    router.get('/admin/create-user', 
         getCreateUserPage
     );
     router.post('/admin/handle-create-user',
@@ -39,14 +42,14 @@ const webRouters = (app: Express) => {
     router.post('/admin/delete-user/:id',
         postDeleteUser
     )
-    router.get('/admin/view-user/:id',
+    router.get('/admin/view-user/:id', 
         getViewUser
     )
     router.post('/admin/update-user',
         fileUpLoadMiddleware("avatar"),
         postUpdateUser
     )
-    router.get('/admin/product', getAdminProductPage)
+    router.get('/admin/product',  getAdminProductPage)
     router.get('/admin/create-product', getAminCreateProductPage);
     router.post('/admin/create-product', fileUpLoadMiddleware("image", "images/product"), postAminCreateProduct);
 
@@ -54,9 +57,9 @@ const webRouters = (app: Express) => {
     router.get("/admin/view-product/:id", getViewProduct);
     router.post("/admin/update-product", fileUpLoadMiddleware("image", "images/product"), postUpdateProduct);
 
-    router.get('/admin/order', getAdminOrderPage)
+    router.get('/admin/order',  getAdminOrderPage)
 
-    app.use('/', router)
+    app.use('/',isAdmin, router)
 }
 export default webRouters;
 

@@ -1,3 +1,4 @@
+/// <reference path="./types/indexD.ts" />
 import express from "express";
 import 'dotenv/config';
 import webRouters from "./routers/web";
@@ -57,7 +58,8 @@ initDatabase()
 
 // handle 404 not found (middleware)
 app.use((req, res) => {
-  res.send("404 Not Found")
+  // res.send("404 Not Found")
+  res.render("status/404")
 })
 
 app.listen(PORT, () => {

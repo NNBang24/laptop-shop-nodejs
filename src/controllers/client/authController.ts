@@ -1,4 +1,5 @@
-import {Request , Response} from "express" ;
+import {Request , Response ,NextFunction} from "express" ;
+import { nextTick } from "process";
 
 import { registerNewUser } from "src/services/client/authServices";
 import { RegisterSchema, TRegisterSchema } from "src/validation/registerSchema";
@@ -37,8 +38,32 @@ const postRegister = async(req : Request , res : Response) => {
     await registerNewUser(fullName , email ,password)  ;
     return res.redirect("/login")
 }
+
+const getSuccessRedirectPage = async (req: Request, res: Response) => {
+
+    const user = req.user as any
+    if(user?.role?.name === "ADMIN")  {
+        res.redirect('/admin')
+    }
+    else {
+        res.redirect('/')
+    }
+
+}
+const postLogout = async (req: Request, res: Response , next : NextFunction) => {
+
+    req.logout(function(err) {
+        if(err) {
+            return next(err) ;
+        }
+        res.redirect('/')
+    })
+
+}
 export {
     getLoginPage ,
      getRegisterPage , 
-     postRegister 
+     postRegister ,
+    getSuccessRedirectPage ,
+    postLogout
 }
