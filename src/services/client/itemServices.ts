@@ -22,7 +22,41 @@ const addProductToCart = async (quantity: number, productId: number, user: Expre
         }
     })
     if (cart) {
-        //update
+        //update ben cart
+        await prisma.cart.update({
+            where: {
+                id: cart.id
+            },
+            data: {
+                sum: { increment: quantity }, // function tu dong tang cua  prisma
+
+            }
+        })
+
+        // update cartDetail 
+        // neu chua co ,tao moi. Co roi , cap nha quantity
+        // upsert = update + insert
+        const currentCartDetail = await prisma.cartDetail.findFirst({
+            where: {
+                cartId: cart.id,
+                productId: productId,
+            }
+        })
+        await prisma.cartDetail.upsert({
+            where: {
+                id : currentCartDetail?.id?? 0
+
+            },
+            update: {
+                quantity: { increment: quantity }
+            },
+            create: {
+                price: product.price,
+                quantity: quantity,
+                productId: productId,
+                cartId: cart.id
+            }
+        })
     }
     else {
         await prisma.cart.create({
@@ -32,9 +66,9 @@ const addProductToCart = async (quantity: number, productId: number, user: Expre
                 cartDetails: {
                     create: [
                         {
-                            price : product.price ,
-                            quantity : quantity ,
-                            productId : productId   
+                            price: product.price,
+                            quantity: quantity,
+                            productId: productId
 
                         }
                     ]
