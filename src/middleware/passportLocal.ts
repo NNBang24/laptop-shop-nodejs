@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { prisma } from "src/config/client";
-import { getUserWithRoleById } from "src/services/client/authServices";
+import { getUserSumCart, getUserWithRoleById } from "src/services/client/authServices";
 import { comparePassword, getUserById } from "src/services/userServices";
 
 const configPassportLocal = () => {
@@ -40,8 +40,9 @@ const configPassportLocal = () => {
     passport.deserializeUser(async function (user :any, callBack) { //Mỗi request tiếp theo -> Passport sẽ lấy user từ session và gắn vào:
         const {id } = user
         // query to database
-        const userInDB = await getUserWithRoleById(id)
-        return callBack(null, {...userInDB});
+        const userInDB : any= await getUserWithRoleById(id) ;
+        const sumCart = await getUserSumCart(id) ;
+        return callBack(null, {...userInDB, sumCart: sumCart});
 
     });
 }
