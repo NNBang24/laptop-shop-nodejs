@@ -1,6 +1,7 @@
 
 import e, { Request, Response } from "express"
 import { get } from "http";
+import { getOrderAdmin, getOrderDetailAdmin } from "src/services/admin/orderServices";
 import { getProductList } from "src/services/admin/productServices";
 import { getALlUsers } from "src/services/userServices";
 
@@ -22,6 +23,18 @@ const getAdminProductPage = async (req: Request, res: Response) => {
     );
 }
 const getAdminOrderPage = async (req: Request, res: Response) => {
-    return res.render("admin/order/show.ejs");
+    const orders = await getOrderAdmin();
+
+    return res.render("admin/order/show.ejs", {
+        orders
+    });
 }
-export {getDashboardPage ,getAdminUserPage , getAdminProductPage , getAdminOrderPage}
+const getAdminOrderDetailPage = async (req: Request, res: Response) =>{
+    const {id} = req.params ;
+    const orderDetails = await getOrderDetailAdmin(+id) ;
+    return res.render("admin/order/detail.ejs", {
+        orderDetails , id
+    });
+    
+}
+export {getDashboardPage ,getAdminUserPage , getAdminProductPage , getAdminOrderPage ,getAdminOrderDetailPage}
