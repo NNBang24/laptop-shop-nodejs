@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 import { getCreateUserPage, getHomePage, postCreateUserPage, postDeleteUser, getViewUser, postUpdateUser } from '../controllers/userController';
 import { getDashboardPage, getAdminUserPage, getAdminProductPage, getAdminOrderPage, getAdminOrderDetailPage } from '../controllers/admin/dashboardController';
 import fileUpLoadMiddleware from 'src/middleware/multer';
-import { getCartPage, getProductPage, postAddProductToCart, getCheckOutPage ,postHandleCartToCheckout ,postPlaceOrder ,postThanksPage} from 'src/controllers/client/productController';
+import { getCartPage, getProductPage, postAddProductToCart, getCheckOutPage, postHandleCartToCheckout, postPlaceOrder, postThanksPage, getOrderHistoryPage } from 'src/controllers/client/productController';
 import { getAminCreateProductPage, getViewProduct, postAminCreateProduct, postDeleteProduct, postDeleteProductInCart, postUpdateProduct } from 'src/controllers/admin/productController';
 import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogout, postRegister } from 'src/controllers/client/authController';
 import { hashPassword } from 'src/services/userServices';
@@ -35,6 +35,7 @@ const webRouters = (app: Express) => {
     router.get('/checkout', getCheckOutPage)
     router.post('/place-order' ,postPlaceOrder)
     router.get('/thanks', postThanksPage)
+    router.get("/order-history", getOrderHistoryPage);
     // admin router 
     router.get('/admin',getDashboardPage)
     router.get('/admin/user', getAdminUserPage)

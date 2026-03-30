@@ -1,5 +1,6 @@
 import { time } from "console";
 import { Request, Response } from "express";
+import { getOrderHistory } from "src/services/admin/orderServices";
 import { addProductToCart, getProductById, getProductInCart, updateCartDetailBeforeCheckout ,handlePlaceOrder } from "src/services/client/itemServices";
 
 const getProductPage =async( req : Request , res : Response) => {
@@ -66,6 +67,13 @@ const postThanksPage = async (req: Request, res: Response) => {
     if (!user) return res.redirect('/login');
     return res.render('client/product/thanks')
 }
+
+const getOrderHistoryPage = async (req: Request, res: Response) => {
+    const user = req.user ; 
+    if (!user) return res.redirect('/login');
+    const orders = await getOrderHistory(user.id) ;
+    return res.render('client/product/orderHistory' , {orders })
+}
 export {
-    getProductPage ,postAddProductToCart , getCartPage , getCheckOutPage , postHandleCartToCheckout ,postPlaceOrder ,postThanksPage
+    getProductPage ,postAddProductToCart , getCartPage , getCheckOutPage , postHandleCartToCheckout ,postPlaceOrder ,postThanksPage , getOrderHistoryPage
 }
