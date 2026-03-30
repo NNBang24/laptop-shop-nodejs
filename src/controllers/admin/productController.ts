@@ -98,11 +98,13 @@ const postDeleteProductInCart = async (req: Request, res: Response) => {
 
     return res.redirect("/cart");
 }
+
 export {
     getAminCreateProductPage,
     postAminCreateProduct,
     postDeleteProduct,
     getViewProduct,
     postUpdateProduct,
-    postDeleteProductInCart
+    postDeleteProductInCart ,
+
 }
