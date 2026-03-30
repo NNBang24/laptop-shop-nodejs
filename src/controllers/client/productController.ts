@@ -1,6 +1,6 @@
 import { time } from "console";
 import { Request, Response } from "express";
-import { addProductToCart, getProductById, getProductInCart } from "src/services/client/itemServices";
+import { addProductToCart, getProductById, getProductInCart, updateCartDetailBeforeCheckout } from "src/services/client/itemServices";
 
 const getProductPage =async( req : Request , res : Response) => {
     const {id} = req.params ; 
@@ -46,6 +46,15 @@ const getCheckOutPage = async (req: Request, res: Response) => {
         cartDetails, totalPrice
     })
 }
+
+const postHandleCartToCheckout = async (req: Request, res: Response) => {
+        const user = req.user ;
+        if(!user) return res.redirect('/login');
+        const currentCartDetail:{id:string , quantity:string}[] = req.body?.cartDetails ?? []
+    await updateCartDetailBeforeCheckout(currentCartDetail)
+        return res.redirect('/checkout')
+}
+
 export {
-    getProductPage ,postAddProductToCart , getCartPage , getCheckOutPage
+    getProductPage ,postAddProductToCart , getCartPage , getCheckOutPage , postHandleCartToCheckout
 }

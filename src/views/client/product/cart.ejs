@@ -71,7 +71,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% cartDetails.forEach( function (cartDetail) { %>
+                            <% cartDetails.forEach( function (cartDetail, index) { %>
                                 <tr>
                                     <th scope="row">
                                         <div class="d-flex align-items-center">
@@ -103,7 +103,8 @@
                                             <input type="text" class="form-control form-control-sm text-center border-0"
                                                 value="<%=cartDetail.quantity %>"
                                                 data-cart-detail-id="<%=cartDetail.id %>"
-                                                data-cart-detail-price="<%=cartDetail.price %>" />
+                                                data-cart-detail-price="<%=cartDetail.price %>"
+                                                data-cart-detail-index="<%=index %>" />
                                             <div class="input-group-btn">
                                                 <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                                     <i class="fa fa-plus"></i>
@@ -118,15 +119,12 @@
                                         </p>
                                     </td>
                                     <td>
-
                                         <form action="/delete-product-in-cart/<%=cartDetail.id %>" method="post">
                                             <button class="btn btn-md rounded-circle bg-light border mt-4">
                                                 <i class="fa fa-times text-danger"></i>
                                             </button>
                                         </form>
-
                                     </td>
-
                                 </tr>
                                 <% }) %>
                                     <%if (user?.sumCart===0) { %>
@@ -169,11 +167,28 @@
                                             }).format(totalPrice) %>
                                     </p>
                                 </div>
-                                <form method="get" action="/checkout">
+                                <form method="post" action="/handle-cart-to-checkout">
+                                    <div style="display: none">
+                                        <% cartDetails.forEach( function (cartDetail, index) { %>
+                                            <div class="mb-3">
+                                                <div class="form-group">
+                                                    <label>Id:</label>
+                                                    <input class="form-control" type="text" value="<%=cartDetail.id %>"
+                                                        name="cartDetails[<%= index %>][id]" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Quantity:</label>
+                                                    <input class="form-control" type="text"
+                                                        value="<%=cartDetail.quantity %>"
+                                                        name="cartDetails[<%= index %>][quantity]"
+                                                        id="cartDetails[<%= index %>]" />
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                    </div>
                                     <button
                                         class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
-                                        type="submit">Xác
-                                        nhận thanh toán
+                                        type="submit">Xác nhận thanh toán
                                     </button>
                                 </form>
                             </div>
