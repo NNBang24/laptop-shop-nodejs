@@ -1,14 +1,15 @@
 
 import e, { Request, Response } from "express"
 import { get } from "http";
+import { getDashboardInfo } from "src/services/admin/dasboardServices";
 import { getOrderAdmin, getOrderDetailAdmin } from "src/services/admin/orderServices";
 import { getProductList } from "src/services/admin/productServices";
 import { getALlUsers } from "src/services/userServices";
 
 const getDashboardPage = async (req: Request, res: Response) => {
 
-
-    return res.render("admin/dashboard/show.ejs");
+    const info = await getDashboardInfo()
+    return res.render("admin/dashboard/show.ejs",{info});
 }
 const getAdminUserPage = async (req: Request, res: Response) => {
     const users = await getALlUsers();
