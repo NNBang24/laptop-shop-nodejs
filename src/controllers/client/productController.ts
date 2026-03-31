@@ -30,8 +30,9 @@ const getCartPage = async (req: Request, res: Response) => {
         return +item.price * +item.quantity;
     })?.reduce((a, b) => {
         return a + b
-    }, 0)
-    return res.render('client/product/cart', { cartDetails, totalPrice })
+    }, 0) ;
+    const cartId = cartDetails.length ? cartDetails[0].cartId : 0
+    return res.render('client/product/cart', { cartDetails, totalPrice , cartId})
 
 }
 const getCheckOutPage = async (req: Request, res: Response) => {
@@ -51,8 +52,9 @@ const getCheckOutPage = async (req: Request, res: Response) => {
 const postHandleCartToCheckout = async (req: Request, res: Response) => {
     const user = req.user;
     if (!user) return res.redirect('/login');
+    const {cartId} = req.body
     const currentCartDetail: { id: string, quantity: string }[] = req.body?.cartDetails ?? []
-    await updateCartDetailBeforeCheckout(currentCartDetail)
+    await updateCartDetailBeforeCheckout(currentCartDetail ,cartId)
     return res.redirect('/checkout')
 }
 const postPlaceOrder = async (req: Request, res: Response) => {
