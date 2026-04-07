@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
@@ -8,7 +7,8 @@
     "skipLibCheck": true,
     "rootDir": "src",
     "outDir": "dist",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0" 
   },
   "include": [
     "src"

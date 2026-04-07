@@ -4,7 +4,7 @@ import {  deleteProductInCart } from "src/services/client/itemServices";
 import { ProductSchema, TProductSchema } from "src/validation/productSchema";
 
 const getAminCreateProductPage = async (req: Request, res: Response) => {
-    const errors = [];
+    const errors : string[]= [];
     const oldData = {
         name: '',
         price: '',
@@ -41,7 +41,7 @@ const postAminCreateProduct = async (req: Request, res: Response) => {
     const image = req?.file?.filename ?? null
 
     await createProduct(
-        name, +price, detailDesc, shortDesc, +quantity, factory, target, image
+        name, +price, detailDesc, shortDesc, +quantity, factory, target, image ?? ''
     )
 
     return res.redirect("/admin/product")
@@ -80,9 +80,12 @@ const getViewProduct = async (req: Request, res: Response) => {
 }
 const postUpdateProduct = async (req: Request, res: Response) => {
     const { id, name, price, detailDesc, shortDesc, quantity, factory, target } = req.body as TProductSchema;
+    if (!id) {
+        return res.status(400).send("Product ID is required");
+    }
     const image = req?.file?.filename ?? null
     await updateProductById(
-        +id, name, +price, detailDesc, shortDesc, +quantity, factory, target, image
+        +id, name, +price, detailDesc, shortDesc, +quantity, factory, target, image ?? ''
     )
     return res.redirect("/admin/product")
 }
@@ -90,14 +93,18 @@ const postDeleteProductInCart = async (req: Request, res: Response) => {
     const { id } = req.params;
     const user = req.user;
 
-    if (user) {
-        await deleteProductInCart(+id, user.id, user.sumCart);
-    } else {
+
+    const cartDetailId = Number(id);
+    if (!cartDetailId || !user) {
         return res.redirect("/login");
     }
 
+    const sumCart = (user as any).sumCart ?? 1; 
+
+    await deleteProductInCart(cartDetailId, user.id, sumCart);
+
     return res.redirect("/cart");
-}
+};
 
 export {
     getAminCreateProductPage,

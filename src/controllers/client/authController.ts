@@ -6,7 +6,7 @@ import { RegisterSchema, TRegisterSchema } from "src/validation/registerSchema";
 
 
 const getRegisterPage = async(req:Request , res :Response) => {
-    const errors = [] ;
+    const errors :string [] = [] ;
     const oldData = {
         fullname : '' ,
         email : '' ,

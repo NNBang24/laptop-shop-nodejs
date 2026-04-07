@@ -1,0 +1,42 @@
+[33m35eb947[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m fix(cart):quantity from cart in page Checkout
+[33m9b5f27b[m fix: correct quantity update from product detail not reflecting in cart
+[33m9978b22[m feat : implement purchase history for user orders
+[33m6e1460b[m feat(order):handle order from Admin
+[33md80c83f[m feat(order) : complete order placement functitonallity
+[33mb708aa9[m feat(cart) :complete cart functionality
+[33m3fc7bbe[m feat(cart):desgin UI checkout
+[33m4308ad3[m feat(cart) : complete delete product from cart
+[33m1697213[m feat(cart):handle increase/decrease product quantity in cart
+[33mca5cf64[m feat(cart) :  complete cart detail page
+[33m7876ea1[m feat(cart): design Ui cart detail and update quantity cart in Ui header
+[33mbdde43c[m feat(cart):Add product to cart (update)
+[33m43012b3[m feat(cart):Add product to cart (create)
+[33m81c5235[m feat:update SQL in Cart and CartDetail
+[33m8d652be[m feat:Add logout feature and UI for 403, 404, 500 pages
+[33m7c79aa2[m feat: handle req.user and map to res.locals
+[33mdf2ea2d[m feat:handle session and prisma
+[33me0cc2f1[m feat : handle Session (Memory)
+[33m08a373d[m feat: integrate passport authentication into login
+[33m1589437[m feat(auth): add register page, validation with Zod and create new user service
+[33m43c9f02[m feat : update UI Login and register
+[33m8cf7a86[m feat: load product data on homepage and product detail page
+[33mba8efb3[m feat(product) : complete CRUD for product management
+[33mceaf52b[m chore(product): update product database
+[33m8451395[m feat : product validation implemented successfully
+[33m4997417[m feat: complete admin product UI, product detail page and product homepage
+[33meb00b67[m feat(main):complete user CRUD management for admin panel
+[33m91330e7[m feat(main): hash password before saving to database
+[33md6af9b4[m feat(main) : implement single image upload with multer and save filename to DB
+[33m442f07b[m feat(main): add desigin Upload file and Image with Preview
+[33m273add9[m hoan thanh giao dien qua Admin
+[33m95ffbe8[m cap nhat giao dien dashboard (admin)
+[33m72ee658[m update models o fiel schema.prisma , va cap nhat crud trong fiel userServices.ts su dung prisma
+[33m057c9df[m fix bug ve loi Port
+[33ma609007[m cap nhat update User
+[33m31f9fb2[m ket noi  Database , lam get user , create user , delete user , view user
+[33ma57f0bf[m mo hinh mvc , static , design giao dien
+[33m7ed96bc[m cap nhat hoc (routes , env(Environmenr Variables) , Template(View) Engine
+[33m0aeced1[m thiet lap cau hinh ts chay nodejs sang js
+[33me921063[m up
+[33m7221d0e[m hello word
+[33m7f01b6a[m first commit
