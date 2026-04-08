@@ -4,7 +4,7 @@ import { get } from "http";
 import { getDashboardInfo } from "src/services/admin/dashboardServices";
 import { getOrderAdmin, getOrderDetailAdmin } from "src/services/admin/orderServices";
 import { getProductList } from "src/services/admin/productServices";
-import { getALlUsers } from "src/services/userServices";
+import { countTotalUserPages, getALlUsers } from "src/services/userServices";
 
 const getDashboardPage = async (req: Request, res: Response) => {
 
@@ -14,9 +14,17 @@ const getDashboardPage = async (req: Request, res: Response) => {
     });
 }
 const getAdminUserPage = async (req: Request, res: Response) => {
-    const users = await getALlUsers();
+    const {page} = req.query ; 
+    let currentPage = page ? +page : 1 ;
+    if(currentPage <= 0) {
+         currentPage = 1
+    }
+    const users = await getALlUsers(currentPage);
+    const totalPages = await countTotalUserPages()
     return res.render("admin/user/show.ejs" , {
-        users : users
+        users : users ,
+        totalPages : +totalPages,
+        page : currentPage
     });
 }
 const getAdminProductPage = async (req: Request, res: Response) => {

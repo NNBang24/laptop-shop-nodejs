@@ -1,13 +1,13 @@
-import { Request, Response } from "express"
+import { query, Request, Response } from "express"
 import { getALlUsers, handleCreateUser, handleDeleteUser, getUserById, handleUpdateUserById, getALlRoles } from "../services/userServices";
 import { access } from "fs";
 import { getProducts } from "src/services/client/itemServices";
 
 const getHomePage = async (req: Request, res: Response) => {
         const products = await getProducts();
-        const user = req.user ; 
-        const a = req.user
-        console.log(">>> current user" , user)
+   
+        const {page }= req.query
+        console.log(">>> current query" , page)
         return res.render("client/home/show.ejs" , {products});
     
 };
